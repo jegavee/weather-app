@@ -5,5 +5,12 @@ Dear new hire, we're excited to have you on board. Please make sure to read the 
 -->
 <!-- You can freely remove the <app-sample-card> and create your 
     own components for displaying weather data. -->
-    
-<app-sample-card [weatherData]="weatherDataResource.value()"></app-sample-card>
+
+<div class="home-container">
+    <app-weather-search class="search-container" (weatherFound)="onWeatherFound($event)"></app-weather-search>
+
+    <div *ngIf="weatherData">
+        <app-weather-card *ngIf="weatherData" [weatherData]="weatherData"></app-weather-card>
+        <div class="info-cards"></div>
+    </div>
+</div>

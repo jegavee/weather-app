@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  weatherApiKey: '0babfd31576e920526287dc9f038ef1c',
+  weatherApiKey: '1a7cbcc3ada3b3720e7b05f4b5caa76a',
   weatherBaseUrl: 'https://api.openweathermap.org/data/2.5/weather'
 };

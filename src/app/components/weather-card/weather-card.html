@@ -1,0 +1,20 @@
+<div class="weather-card" *ngIf="weatherData() as data">
+  <div class="header">
+    <h2>{{ data.name }}, {{ data.sys?.country }}</h2>
+    <span>{{ data.dt ? (data.dt * 1000 | date:'medium') : '' }}</span>
+  </div>
+  <div class="main">
+    <img 
+        [src]="data.weather?.[0]?.icon ? 
+            'https://openweathermap.org/img/wn/' + data.weather?.[0]?.icon + '@2x.png' : ''" 
+        alt="Weather icon" 
+    />
+
+    <div class="temp">
+        <span class="current">{{ data.main?.temp }}°C</span>
+        <span class="desc">{{ data.weather?.[0]?.description }}</span>
+        <span class="minmax">{{ data.main?.temp_min }}°F / {{ data.main?.temp_max }}°F</span>
+    </div>
+    
+  </div>
+</div>

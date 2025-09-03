@@ -1,0 +1,10 @@
+<div>
+  <input 
+    [(ngModel)]="city"
+    placeholder="Enter city name"
+    (keyup.enter)="search()"
+    [disabled]="loading"
+  />
+</div>
+<div *ngIf="loading">Loading...</div>
+<div *ngIf="error" class="error">{{ error }}</div>
