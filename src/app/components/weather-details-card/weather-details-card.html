@@ -1,0 +1,61 @@
+<div class="weatherDetails-card" *ngIf="weatherData() as data">
+  <div class="detail-row">
+    <div class="detail-item">
+        <span class="label">Humidity:</span>
+        <span class="value">{{ data.main?.humidity }}%</span>
+    </div>
+
+    <div class="detail-item">
+        <span class="label">Wind:</span>
+        <span class="value">{{ data.wind?.speed }} m/s</span>
+    </div>
+  </div>
+
+  <div class="detail-row">
+    <div class="detail-item">
+        <span class="label">Pressure:</span>
+        <span class="value">{{ data.main?.pressure }} hPa</span>
+    </div>
+
+    <div class="detail-item">
+        <span class="label">Visibility:</span>
+        <span class="value">{{ data.visibility / 1000 }} km</span>
+    </div>
+  </div>
+
+  <div class="detail-row">
+    <div class="detail-item">
+        <span class="label">Clouds:</span>
+        <span class="value">{{ data.clouds.all }}%</span>
+    </div>
+
+    <div class="detail-item" *ngIf="data.rain">
+        <span class="label">Rain:</span>
+        <span class="value" *ngIf="data.rain['1h']">Last hour: {{ data.rain['1h'] }} mm</span>
+        <span *ngIf="data.rain['3h']">Last 3 hours: {{ data.rain['3h'] }} mm</span>
+        </div>
+    <div class="detail-item" *ngIf="!data.rain">
+        <span class="label">Rain:</span>
+        <span class="value">No rain</span>
+    </div>
+  </div>
+
+<div class="detail-row">
+  <div class="detail-item">
+    <span class="label">Sunrise:</span>
+    <span class="value" *ngIf="data.sys.sunrise != null && data.timezone != null; else dash">
+      {{ ((data.sys.sunrise + data.timezone) * 1000) | date:'hh:mm a':'UTC' }}
+    </span>
+  </div>
+
+  <div class="detail-item">
+    <span class="label">Sunset:</span>
+    <span class="value" *ngIf="data.sys.sunset != null && data.timezone != null; else dash">
+      {{ ((data.sys.sunset + data.timezone) * 1000) | date:'hh:mm a':'UTC' }}
+    </span>
+  </div>
+</div>
+
+<ng-template #dash>--</ng-template>
+
+</div>

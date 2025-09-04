@@ -14,8 +14,8 @@ export class Weather implements IWeatherService {
   private readonly apiKey = environment.weatherApiKey;
   private readonly baseUrl = environment.weatherBaseUrl;
 
-  getWeather(city: string): Promise<IWeather> {
-    return lastValueFrom(this.http.get<IWeather>(`${this.baseUrl}?q=${city}&appid=${this.apiKey}`));
+  getWeather(city: string, unit: 'metric' | 'imperial' = 'metric'): Promise<IWeather> {
+    return lastValueFrom(this.http.get<IWeather>(`${this.baseUrl}?q=${city}&appid=${this.apiKey}&units=${unit}`));
   }
 
 }

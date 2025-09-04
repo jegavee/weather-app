@@ -5,6 +5,10 @@
     (keyup.enter)="search()"
     [disabled]="loading"
   />
+  <select [(ngModel)]="unit" (change)="onUnitChange()">
+    <option value="metric">°C</option>
+    <option value="imperial">°F</option>
+  </select>
 </div>
 <div *ngIf="loading">Loading...</div>
 <div *ngIf="error" class="error">{{ error }}</div>

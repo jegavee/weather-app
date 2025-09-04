@@ -5,16 +5,15 @@
   </div>
   <div class="main">
     <img 
-        [src]="data.weather?.[0]?.icon ? 
-            'https://openweathermap.org/img/wn/' + data.weather?.[0]?.icon + '@2x.png' : ''" 
-        alt="Weather icon" 
+      [src]="data.weather?.[0]?.icon ? 
+        'https://openweathermap.org/img/wn/' + data.weather?.[0]?.icon + '@2x.png' : ''" 
+      alt="Weather icon" 
     />
-
     <div class="temp">
-        <span class="current">{{ data.main?.temp }}°C</span>
-        <span class="desc">{{ data.weather?.[0]?.description }}</span>
-        <span class="minmax">{{ data.main?.temp_min }}°F / {{ data.main?.temp_max }}°F</span>
+      <span class="current">
+        {{ data.main?.temp }}{{ unit() === "metric" ? '°C' : '°F' }}
+      </span>
+      <span class="desc">{{ data.weather?.[0]?.description }}</span>
     </div>
-    
   </div>
 </div>

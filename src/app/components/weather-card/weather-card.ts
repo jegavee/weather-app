@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, effect, signal } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { IWeather } from '../../models/weather.model';
 
@@ -11,4 +11,5 @@ import { IWeather } from '../../models/weather.model';
 })
 export class WeatherCard {
   readonly weatherData = input<IWeather>();
+  readonly unit = input<'metric' | 'imperial'>('metric');
 }

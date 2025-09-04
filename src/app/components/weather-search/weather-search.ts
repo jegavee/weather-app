@@ -13,24 +13,34 @@ import { IWeather } from '../../models/weather.model';
 })
 export class WeatherSearch {
   city = '';
+  unit: 'metric' | 'imperial' = 'metric';
   loading = false;
   error = '';
 
-  @Output() weatherFound = new EventEmitter<IWeather>();
-
   constructor(private weatherService: Weather) {}
+
+  @Output() weatherFound = new EventEmitter<{ data: IWeather | undefined, unit: 'metric' | 'imperial' }>();
 
   async search() {
     if (!this.city) return;
     this.loading = true;
     this.error = '';
     try {
-      const weatherData = await this.weatherService.getWeather(this.city);
-      this.weatherFound.emit(weatherData);
+      const weatherData = await this.weatherService.getWeather(this.city, this.unit);
+      console.log(weatherData);
+      this.weatherFound.emit({ data: weatherData, unit: this.unit }); // include unit
     } catch {
       this.error = 'City not found or API error.';
-      this.weatherFound.emit(undefined);
+      this.weatherFound.emit({ data: undefined, unit: this.unit });
     }
     this.loading = false;
+  }
+
+
+  onUnitChange() {
+    if (this.city) {
+      console.log(this.unit);
+      this.search();
+    }
   }
 }

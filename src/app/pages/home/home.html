@@ -7,10 +7,22 @@ Dear new hire, we're excited to have you on board. Please make sure to read the 
     own components for displaying weather data. -->
 
 <div class="home-container">
-    <app-weather-search class="search-container" (weatherFound)="onWeatherFound($event)"></app-weather-search>
+    <div class="search-container">
+        <app-weather-search (weatherFound)="onWeatherFound($event)"></app-weather-search>
+    </div>
+    <div class="card-container">
+        <ng-container *ngIf="weatherData; else placeholder">
+            <app-weather-card class="weather-card" [weatherData]="weatherData" [unit]="unit"></app-weather-card>
+            <app-weather-details-card class="weather-card" [weatherData]="weatherData"></app-weather-details-card>
+        </ng-container>
 
-    <div *ngIf="weatherData">
-        <app-weather-card *ngIf="weatherData" [weatherData]="weatherData"></app-weather-card>
-        <div class="info-cards"></div>
+        <ng-template #placeholder>
+            <div class="weather-placeholder weather-card">
+                <p>Search for a city to see weather data</p>
+            </div>
+            <div class="weather-details-placeholder weather-card">
+                <p>Weather details will appear here</p>
+            </div>
+        </ng-template>
     </div>
 </div>
