@@ -12,8 +12,8 @@ Dear new hire, we're excited to have you on board. Please make sure to read the 
     </div>
     <div class="card-container">
         <ng-container *ngIf="weatherData; else placeholder">
-            <app-weather-card class="weather-card" [weatherData]="weatherData" [unit]="unit"></app-weather-card>
-            <app-weather-details-card class="weather-card" [weatherData]="weatherData"></app-weather-details-card>
+            <app-weather-card [weatherData]="weatherData" [unit]="unit"></app-weather-card>
+            <app-weather-details-card [weatherData]="weatherData" [unit]="unit"></app-weather-details-card>
         </ng-container>
 
         <ng-template #placeholder>

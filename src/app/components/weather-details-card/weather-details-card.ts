@@ -21,4 +21,5 @@ export class WeatherDetailsCard {
 
 
   readonly weatherData = input<IWeather>();
+  readonly unit = input<'metric' | 'imperial'>('metric');
 }

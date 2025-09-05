@@ -7,7 +7,7 @@
 
     <div class="detail-item">
         <span class="label">Wind:</span>
-        <span class="value">{{ data.wind?.speed }} m/s</span>
+        <span class="value">{{ data.wind?.speed }} {{ unit() === "metric" ? 'mp/h' : 'km/h' }}</span>
     </div>
   </div>
 
@@ -31,8 +31,7 @@
 
     <div class="detail-item" *ngIf="data.rain">
         <span class="label">Rain:</span>
-        <span class="value" *ngIf="data.rain['1h']">Last hour: {{ data.rain['1h'] }} mm</span>
-        <span *ngIf="data.rain['3h']">Last 3 hours: {{ data.rain['3h'] }} mm</span>
+        <span class="value" *ngIf="data.rain['1h']">{{ data.rain['1h'] }} mm (1 hr ago)</span>
         </div>
     <div class="detail-item" *ngIf="!data.rain">
         <span class="label">Rain:</span>

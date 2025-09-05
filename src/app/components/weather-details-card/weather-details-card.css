@@ -1,30 +1,37 @@
 .weatherDetails-card {
     background-color: white;
     border-radius: 24px;
-    padding: 1rem;
-
-    width: 90%;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-
-    margin: 0 auto;
-}
-
-.detail-row {
-    display: flex;
-    justify-content: space-between;
-    font-size: 1rem;
-    border-bottom: 1px solid dodgerblue;
-    padding: 1rem 0.5rem;
-}
-
-.detail-item {
-    width: 45%;
+    padding: 0.5rem 1rem;
+    
+    width: 100%;
+    
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+
+    box-sizing: border-box;
+
+    flex: 1;
 }
+
+.detail-row {
+    display: grid;
+    grid-template-columns: 130px 130px; /* Equal columns */
+    gap: 2rem;
+    font-size: 1rem;
+    border-bottom: 1px solid dodgerblue;
+    padding: 1rem 1rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.detail-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+}
+
 
 .label {
     color: #555;
@@ -34,8 +41,8 @@
 
 .value {
     font-weight: bold;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     text-align: end;
 
-    color:darkcyan
+    color:darkcyan;
 }

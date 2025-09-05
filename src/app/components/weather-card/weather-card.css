@@ -1,7 +1,9 @@
 .weather-card {
   padding: 1.5rem;
-  max-width: 350px;
+  max-width: 100%;
   gap: 1rem;
+
+  text-align: center;
 }
 
 .header {
