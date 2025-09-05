@@ -1,19 +1,26 @@
-div {
+.search-container {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   padding: 0;
   width: 100%;
+  position: relative;
+}
+
+.input-wrapper {
+  position: relative;
+  width: 80%;
 }
 
 input {
-  width: 80%;
+  width: 100%;
   padding: 0.70rem 1rem;
   font-size: 1rem;
   border: 1px solid #ccc;
   border-radius: 50px;
   outline: none;
   transition: border-color 0.2s;
+  box-sizing: border-box;
 }
 
 input:focus {
@@ -21,7 +28,7 @@ input:focus {
 }
 
 select {
-  margin-left: 00;
+  margin-left: 0;
   padding: 0.2rem;
   font-size: 1rem;
   border: 1px solid transparent;
@@ -29,9 +36,7 @@ select {
   color: white;
   outline: none;
   transition: border-color 0.2s;
- 
 }
-
 
 option {
   background-color: white;
@@ -42,4 +47,89 @@ option {
   color: #d32f2f;
   margin-top: 0.5rem;
   font-size: 0.95rem;
+}
+
+/* Recent Searches Dropdown Styles */
+.recent-searches-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  max-height: 200px;
+  overflow-y: auto;
+  margin-top: 4px;
+}
+
+.dropdown-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background-color: #f5f5f5;
+  border-bottom: 1px solid #eee;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #666;
+}
+
+.clear-btn {
+  background: none;
+  border: none;
+  color: #0078d4;
+  cursor: pointer;
+  font-size: 0.8rem;
+  padding: 2px 4px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.clear-btn:hover {
+  background-color: #e6f3ff;
+}
+
+.dropdown-content {
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.recent-search-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+.recent-search-item:hover {
+  background-color: #f0f8ff;
+}
+
+.recent-search-item:last-child {
+  border-bottom: none;
+}
+
+.search-icon {
+  margin-right: 8px;
+  font-size: 0.8rem;
+  opacity: 0.6;
+}
+
+.no-recent {
+  padding: 12px;
+  text-align: center;
+  color: #999;
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+/* Ensure dropdown appears above other elements */
+.input-wrapper {
+  z-index: 1;
 }

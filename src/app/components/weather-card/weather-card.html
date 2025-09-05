@@ -11,7 +11,7 @@
     />
     <div class="temp">
       <span class="current">
-        {{ data.main?.temp }}{{ unit() === "metric" ? '°C' : '°F' }}
+        {{ data.main.temp }}{{ unit() === "metric" ? '°C' : '°F' }}
       </span>
       <span class="desc">{{ data.weather?.[0]?.description }}</span>
     </div>

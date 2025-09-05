@@ -1,14 +1,48 @@
-<div>
-  <input 
-    [(ngModel)]="city"
-    placeholder="Enter city name"
-    (keyup.enter)="search()"
-    [disabled]="loading"
-  />
+<div class="search-container">
+  <div class="input-wrapper">
+    <input 
+      #searchInput
+      [(ngModel)]="city"
+      placeholder="Enter city name"
+      (keyup.enter)="search()"
+      (focus)="onInputFocus()"
+      (blur)="onInputBlur()"
+      [disabled]="loading"
+    />
+    
+    <!-- Recent Searches Dropdown -->
+    <div *ngIf="showRecentSearches" class="recent-searches-dropdown">
+      <div class="dropdown-header">
+        <span>Recent Searches</span>
+        <button 
+          type="button" 
+          class="clear-btn" 
+          (click)="clearRecentSearches()"
+          *ngIf="recentSearches.length > 0"
+        >
+          Clear
+        </button>
+      </div>
+      
+      <div class="dropdown-content">
+        <div 
+          *ngFor="let recentCity of recentSearches" 
+          class="recent-search-item"
+          (click)="selectRecentSearch(recentCity)"
+        >
+          <i class="search-icon">🕐</i>
+          {{ recentCity }}
+        </div>
+        
+        <div *ngIf="recentSearches.length === 0" class="no-recent">
+          No recent searches
+        </div>
+      </div>
+    </div>
+  </div>
+  
   <select [(ngModel)]="unit" (change)="onUnitChange()">
     <option value="metric">°C</option>
     <option value="imperial">°F</option>
   </select>
 </div>
-<div *ngIf="loading">Loading...</div>
-<div *ngIf="error" class="error">{{ error }}</div>

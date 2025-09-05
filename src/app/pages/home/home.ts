@@ -20,11 +20,26 @@ export class Home {
 
   weatherData: IWeather | undefined = undefined;
   unit: 'metric' | 'imperial' = 'metric';
+  state: 'idle' | 'loading' | 'success' | 'error' = 'idle';
+  errorMessage: string = '';
 
-onWeatherFound(result: { data: IWeather | undefined, unit: 'metric' | 'imperial' }) {
-  this.weatherData = result.data;
-  this.unit = result.unit;
+  onWeatherFound(result: { data: IWeather | undefined, unit: 'metric' | 'imperial' }) {
+  this.errorMessage = '';
+
+  if (result.data) {
+    this.weatherData = result.data;
+    this.unit = result.unit;
+    this.state = 'success';
+  } else {
+    this.errorMessage = 'Failed to fetch weather data. Please try again.';
+    this.state = 'error';
+    this.weatherData = undefined;
+  }
 }
 
 
+  onRetry() {
+    this.state = 'idle';
+    this.errorMessage = '';
+  }
 }

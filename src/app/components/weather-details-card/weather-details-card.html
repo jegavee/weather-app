@@ -2,19 +2,19 @@
   <div class="detail-row">
     <div class="detail-item">
         <span class="label">Humidity:</span>
-        <span class="value">{{ data.main?.humidity }}%</span>
+        <span class="value">{{ data.main.humidity }}%</span>
     </div>
 
     <div class="detail-item">
         <span class="label">Wind:</span>
-        <span class="value">{{ data.wind?.speed }} {{ unit() === "metric" ? 'mp/h' : 'km/h' }}</span>
+        <span class="value">{{ data.wind.speed }} {{ unit() === "metric" ? 'mp/h' : 'km/h' }}</span>
     </div>
   </div>
 
   <div class="detail-row">
     <div class="detail-item">
         <span class="label">Pressure:</span>
-        <span class="value">{{ data.main?.pressure }} hPa</span>
+        <span class="value">{{ data.main.pressure }} hPa</span>
     </div>
 
     <div class="detail-item">
