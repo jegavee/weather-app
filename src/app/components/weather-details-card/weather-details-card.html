@@ -31,7 +31,7 @@
 
     <div class="detail-item" *ngIf="data.rain">
         <span class="label">Rain:</span>
-        <span class="value" *ngIf="data.rain['1h']">{{ data.rain['1h'] }} mm (1 hr ago)</span>
+        <span class="value" *ngIf="data.rain['1h']">{{ data.rain['1h'] }} mm <br> (1 hr ago)</span>
         </div>
     <div class="detail-item" *ngIf="!data.rain">
         <span class="label">Rain:</span>

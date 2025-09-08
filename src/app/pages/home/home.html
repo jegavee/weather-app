@@ -1,56 +1,52 @@
-<!--
-Welcome to the Weather App project! 🚀
-
-Dear new hire, we're excited to have you on board. Please make sure to read the README.md file in this repository for important instructions, project guidelines, and onboarding steps before you start coding.
--->
-
 <div class="home-container">
-    <div class="search-container">
-        <app-weather-search (weatherFound)="onWeatherFound($event)"></app-weather-search>
-    </div>
-    
-    <div class="card-container">
-        <ng-container [ngSwitch]="state">
-            
-            <!-- Loading State -->
-            <ng-container *ngSwitchCase="'loading'">
-                <div class="loading-container weather-card">
-                    <div class="loading-spinner"></div>
-                    <p>Loading weather data...</p>
-                </div>
-                <div class="loading-container weather-card">
-                    <div class="loading-spinner"></div>
-                    <p>Loading weather details...</p>
-                </div>
-            </ng-container>
-            
-            <!-- Error State -->
-            <ng-container *ngSwitchCase="'error'">
-                <div class="error-container weather-card">
-                    <p class="error-icon">⚠️</p>
-                    <p class="error-message">{{ errorMessage }}</p>
-                </div>
-                <div class="error-placeholder weather-card">
-                    <p>Weather details unavailable</p>
-                </div>
-            </ng-container>
-            
-            <!-- Success State -->
-            <ng-container *ngSwitchCase="'success'">
-                <app-weather-card [weatherData]="weatherData" [unit]="unit"></app-weather-card>
-                <app-weather-details-card [weatherData]="weatherData" [unit]="unit"></app-weather-details-card>
-            </ng-container>
-            
-            <!-- Default/Idle State -->
-            <ng-container *ngSwitchDefault>
-                <div class="weather-placeholder weather-card">
-                    <p>Search for a city to see weather data</p>
-                </div>
-                <div class="weather-details-placeholder weather-card">
-                    <p>Weather details will appear here</p>
-                </div>
-            </ng-container>
-            
-        </ng-container>
-    </div>
+  <div class="search-container">
+    <app-weather-search (searchCity)="onSearch($event)"></app-weather-search>
+  </div>
+
+  <div class="card-container">
+
+    <!-- Idle / Default State -->
+    <ng-container *ngIf="!city()">
+      <div class="weather-placeholder weather-card">
+        <p>Search for a city to see weather data</p>
+      </div>
+      <div class="weather-details-placeholder weather-card">
+        <p>Weather details will appear here</p>
+      </div>
+    </ng-container>
+
+    <!-- When a city is set, handle the resource states -->
+    <ng-container *ngIf="city()">
+
+      <!-- Loading State -->
+      <ng-container *ngIf="weatherData.isLoading()">
+        <div class="loading-container weather-card">
+          <div class="loading-spinner"></div>
+          <p>Loading weather data...</p>
+        </div>
+        <div class="loading-container weather-card">
+          <div class="loading-spinner"></div>
+          <p>Loading weather details...</p>
+        </div>
+      </ng-container>
+
+      <!-- Error State -->
+      <ng-container *ngIf="weatherData.error()">
+        <div class="error-container weather-card">
+          <p class="error-icon">⚠️</p>
+          <p class="error-message">Failed to fetch weather data</p>
+        </div>
+        <div class="error-placeholder weather-card">
+          <p>Weather details unavailable</p>
+        </div>
+      </ng-container>
+
+      <!-- Success State -->
+      <ng-container *ngIf="weatherData.value() as data">
+        <app-weather-card [weatherData]="data" [unit]="unit()"></app-weather-card>
+        <app-weather-details-card [weatherData]="data" [unit]="unit()"></app-weather-details-card>
+      </ng-container>
+
+    </ng-container>
+  </div>
 </div>

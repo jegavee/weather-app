@@ -1,8 +1,9 @@
-import { Component, inject, OnInit, resource} from '@angular/core';
+import { Component, signal, inject, resource, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Weather } from '../../services/weather/weather';
+import { IWeather } from '../../models/weather.model';
 import { WeatherSearch } from '../../components/weather-search/weather-search';
 import { WeatherCard } from '../../components/weather-card/weather-card';
-import { IWeather } from '../../models/weather.model';
 import { WeatherDetailsCard } from '../../components/weather-details-card/weather-details-card';
 
 @Component({
@@ -17,29 +18,34 @@ import { WeatherDetailsCard } from '../../components/weather-details-card/weathe
   styleUrl: './home.css'
 })
 export class Home {
+  private readonly weatherService = inject(Weather);
 
-  weatherData: IWeather | undefined = undefined;
-  unit: 'metric' | 'imperial' = 'metric';
-  state: 'idle' | 'loading' | 'success' | 'error' = 'idle';
-  errorMessage: string = '';
+  city = signal('Makati');
+  unit = signal<'metric' | 'imperial'>('metric');
 
-  onWeatherFound(result: { data: IWeather | undefined, unit: 'metric' | 'imperial' }) {
-  this.errorMessage = '';
+  weatherData = resource<IWeather, void>({
+    loader: () => {
+      const c = this.city();
+      const u = this.unit();
 
-  if (result.data) {
-    this.weatherData = result.data;
-    this.unit = result.unit;
-    this.state = 'success';
-  } else {
-    this.errorMessage = 'Failed to fetch weather data. Please try again.';
-    this.state = 'error';
-    this.weatherData = undefined;
+      console.log('Loading weather for:', c, u);
+      return this.weatherService.getWeather(c, u);
+    }
+  });
+
+   constructor() {
+    effect(() => {
+      const error = this.weatherData.error();
+      if (error) {
+        console.error('Weather API error:', error);
+      }
+    });
   }
-}
 
-
-  onRetry() {
-    this.state = 'idle';
-    this.errorMessage = '';
+  onSearch(event: { city: string; unit: 'metric' | 'imperial' }) {
+    console.log('onSearch received:', event);
+    this.city.set(event.city);
+    this.unit.set(event.unit);
+    this.weatherData.reload();
   }
 }

@@ -1,24 +1,25 @@
 <div class="search-container">
   <div class="input-wrapper">
+    <!-- Search Input -->
     <input 
       #searchInput
-      [(ngModel)]="city"
+      [ngModel]="city()" 
+      (ngModelChange)="city.set($event)"
       placeholder="Enter city name"
       (keyup.enter)="search()"
       (focus)="onInputFocus()"
       (blur)="onInputBlur()"
-      [disabled]="loading"
     />
-    
+
     <!-- Recent Searches Dropdown -->
-    <div *ngIf="showRecentSearches" class="recent-searches-dropdown">
+    <div *ngIf="showRecentSearches()" class="recent-searches-dropdown">
       <div class="dropdown-header">
         <span>Recent Searches</span>
         <button 
           type="button" 
           class="clear-btn" 
           (click)="clearRecentSearches()"
-          *ngIf="recentSearches.length > 0"
+          *ngIf="recentSearches().length > 0"
         >
           Clear
         </button>
@@ -26,7 +27,7 @@
       
       <div class="dropdown-content">
         <div 
-          *ngFor="let recentCity of recentSearches" 
+          *ngFor="let recentCity of recentSearches()" 
           class="recent-search-item"
           (click)="selectRecentSearch(recentCity)"
         >
@@ -34,14 +35,17 @@
           {{ recentCity }}
         </div>
         
-        <div *ngIf="recentSearches.length === 0" class="no-recent">
+        <div *ngIf="recentSearches().length === 0" class="no-recent">
           No recent searches
         </div>
       </div>
     </div>
   </div>
   
-  <select [(ngModel)]="unit" (change)="onUnitChange()">
+  <!-- Unit Selector -->
+  <select 
+    [ngModel]="unit()" 
+    (ngModelChange)="unit.set($event); onUnitChange()">
     <option value="metric">°C</option>
     <option value="imperial">°F</option>
   </select>

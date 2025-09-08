@@ -1,8 +1,6 @@
-import { Component, Output, EventEmitter, ElementRef, ViewChild, HostListener } from '@angular/core';
+import { Component, Output, EventEmitter, ElementRef, ViewChild, HostListener, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Weather } from '../../services/weather/weather';
-import { IWeather } from '../../models/weather.model';
 
 @Component({
   selector: 'app-weather-search',
@@ -13,106 +11,87 @@ import { IWeather } from '../../models/weather.model';
 })
 export class WeatherSearch {
   @ViewChild('searchInput', { static: false }) searchInput!: ElementRef;
-  
-  city = '';
-  unit: 'metric' | 'imperial' = 'metric';
-  loading = false;
-  error = '';
-  showRecentSearches = false;
-  recentSearches: string[] = [];
 
-  constructor(private weatherService: Weather) {
+  // signals for state
+  city = signal('');
+  unit = signal<'metric' | 'imperial'>('metric');
+  showRecentSearches = signal(false);
+  recentSearches = signal<string[]>([]);
+
+  @Output() searchCity = new EventEmitter<{ city: string; unit: 'metric' | 'imperial' }>();
+
+  constructor() {
     this.loadRecentSearches();
   }
 
-  @Output() weatherFound = new EventEmitter<{ data: IWeather | undefined, unit: 'metric' | 'imperial' }>();
-
-private loadRecentSearches() {
-  if (typeof window !== 'undefined' && window.localStorage) {
-    const saved = localStorage.getItem('recentWeatherSearches');
-    this.recentSearches = saved ? JSON.parse(saved) : [];
+  // localStorage helpers
+  private loadRecentSearches() {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      const saved = localStorage.getItem('recentWeatherSearches');
+      this.recentSearches.set(saved ? JSON.parse(saved) : []);
+    }
   }
-}
 
-private saveRecentSearches() {
-  if (typeof window !== 'undefined' && window.localStorage) {
-    localStorage.setItem('recentWeatherSearches', JSON.stringify(this.recentSearches));
+  private saveRecentSearches() {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      localStorage.setItem('recentWeatherSearches', JSON.stringify(this.recentSearches()));
+    }
   }
-}
 
-
-  // Add city to recent searches
   private addToRecentSearches(city: string) {
     const normalizedCity = city.trim().toLowerCase();
-    // Remove if already exists (to move to top)
-    this.recentSearches = this.recentSearches.filter(c => c.toLowerCase() !== normalizedCity);
-    // Add to beginning
-    this.recentSearches.unshift(city.trim());
-    // Keep only last 5 searches
-    this.recentSearches = this.recentSearches.slice(0, 5);
+    const updated = this.recentSearches().filter(c => c.toLowerCase() !== normalizedCity);
+    updated.unshift(city.trim());
+    this.recentSearches.set(updated.slice(0, 5));
     this.saveRecentSearches();
   }
 
+  // search trigger
+search() {
+  const city = this.city().trim();
+
+  console.log('Searching for city:', city);
+  if (!city) return;
+
+  this.addToRecentSearches(city);
+  this.searchCity.emit({ city, unit: this.unit() });
+  this.showRecentSearches.set(false);
+}
+
+
+  onUnitChange() {
+    if (this.city()) {
+      this.search();
+    }
+  }
+
+  // dropdown behavior
   onInputFocus() {
-    if (this.recentSearches.length > 0) {
-      this.showRecentSearches = true;
+    if (this.recentSearches().length > 0) {
+      this.showRecentSearches.set(true);
     }
   }
 
   onInputBlur() {
-    // Delay hiding to allow clicks on dropdown items
-    setTimeout(() => {
-      this.showRecentSearches = false;
-    }, 150);
+    setTimeout(() => this.showRecentSearches.set(false), 150);
   }
 
   selectRecentSearch(city: string) {
-    this.city = city;
-    this.showRecentSearches = false;
+    this.city.set(city);
+    this.showRecentSearches.set(false);
     this.search();
   }
 
   clearRecentSearches() {
-    this.recentSearches = [];
+    this.recentSearches.set([]);
     this.saveRecentSearches();
-    this.showRecentSearches = false;
+    this.showRecentSearches.set(false);
   }
 
-  // Close dropdown when clicking outside
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: Event) {
     if (!this.searchInput?.nativeElement.contains(event.target)) {
-      this.showRecentSearches = false;
-    }
-  }
-
-  async search() {
-    if (!this.city) return;
-    this.loading = true;
-    this.error = '';
-    this.showRecentSearches = false;
-    
-    try {
-      const weatherData = await this.weatherService.getWeather(this.city, this.unit);
-      console.log(weatherData);
-      
-      // Add successful search to recent searches
-      if (weatherData) {
-        this.addToRecentSearches(this.city);
-      }
-      
-      this.weatherFound.emit({ data: weatherData, unit: this.unit });
-    } catch {
-      this.error = 'City not found or API error.';
-      this.weatherFound.emit({ data: undefined, unit: this.unit });
-    }
-    this.loading = false;
-  }
-
-  onUnitChange() {
-    if (this.city) {
-      console.log(this.unit);
-      this.search();
+      this.showRecentSearches.set(false);
     }
   }
 }
