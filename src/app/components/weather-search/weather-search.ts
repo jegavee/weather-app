@@ -47,16 +47,15 @@ export class WeatherSearch {
   }
 
   // search trigger
-search() {
-  const city = this.city().trim();
+  search() {
+    const city = this.city().trim();
 
-  console.log('Searching for city:', city);
-  if (!city) return;
+    console.log('Searching for city:', city);
+    if (!city) return;
 
-  this.addToRecentSearches(city);
-  this.searchCity.emit({ city, unit: this.unit() });
-  this.showRecentSearches.set(false);
-}
+    this.addToRecentSearches(city);
+    this.searchCity.emit({ city, unit: this.unit() });
+  }
 
 
   onUnitChange() {
@@ -68,11 +67,13 @@ search() {
   // dropdown behavior
   onInputFocus() {
     if (this.recentSearches().length > 0) {
+      console.log('Showing recent searches dropdown');
       this.showRecentSearches.set(true);
     }
   }
 
   onInputBlur() {
+    console.log('Input blurred, hiding dropdown in 150ms');
     setTimeout(() => this.showRecentSearches.set(false), 150);
   }
 

@@ -1,4 +1,4 @@
-import { Component, signal, inject, resource, effect } from '@angular/core';
+import { Component, signal, inject, resource, effect, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Weather } from '../../services/weather/weather';
 import { IWeather } from '../../models/weather.model';
@@ -20,30 +20,57 @@ import { WeatherDetailsCard } from '../../components/weather-details-card/weathe
 export class Home {
   private readonly weatherService = inject(Weather);
 
-  city = signal('Makati');
+  city = signal('');
   unit = signal<'metric' | 'imperial'>('metric');
+  
+  private searchParams = computed(() => ({
+    city: this.city(),
+    unit: this.unit()
+  }));
 
   weatherData = resource<IWeather, void>({
-    loader: () => {
-      const c = this.city();
-      const u = this.unit();
+    loader: async () => {
+      const params = this.searchParams();
+      const { city: c, unit: u } = params;
 
-      console.log('Loading weather for:', c, u);
-      return this.weatherService.getWeather(c, u);
+      if (!c) {
+        return Promise.resolve(null as any);
+      }
+
+      try {
+        const result = await this.weatherService.getWeather(c, u);
+        return result;
+      } catch (error) {
+        let errorMessage = `Weather data not found for "${c}"`;
+        
+        if (error && typeof error === 'object' && 'status' in error) {
+          const httpError = error as any;
+          if (httpError.status === 404) {
+            errorMessage = `City "${c}" not found`;
+          } else if (httpError.error?.message) {
+            errorMessage = httpError.error.message;
+          } else {
+            errorMessage = `API error: ${httpError.status} ${httpError.statusText || 'Unknown error'}`;
+          }
+        } else if (error instanceof Error) {
+          errorMessage = error.message;
+        }
+        
+        throw new Error(errorMessage);
+      }
     }
   });
 
-   constructor() {
+  constructor() {
     effect(() => {
       const error = this.weatherData.error();
       if (error) {
-        console.error('Weather API error:', error);
+        console.error('Weather Resource error:', error);
       }
     });
   }
 
   onSearch(event: { city: string; unit: 'metric' | 'imperial' }) {
-    console.log('onSearch received:', event);
     this.city.set(event.city);
     this.unit.set(event.unit);
     this.weatherData.reload();

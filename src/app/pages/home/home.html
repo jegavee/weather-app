@@ -30,21 +30,21 @@
         </div>
       </ng-container>
 
-      <!-- Error State -->
-      <ng-container *ngIf="weatherData.error()">
+      <!-- Error State - Show actual error message and prevent overlap with other states -->
+      <ng-container *ngIf="weatherData.error() && !weatherData.isLoading()">
         <div class="error-container weather-card">
           <p class="error-icon">⚠️</p>
-          <p class="error-message">Failed to fetch weather data</p>
+          <p class="error-message">{{ weatherData.error()?.message || 'Failed to fetch weather data' }}</p>
         </div>
         <div class="error-placeholder weather-card">
           <p>Weather details unavailable</p>
         </div>
       </ng-container>
 
-      <!-- Success State -->
-      <ng-container *ngIf="weatherData.value() as data">
-        <app-weather-card [weatherData]="data" [unit]="unit()"></app-weather-card>
-        <app-weather-details-card [weatherData]="data" [unit]="unit()"></app-weather-details-card>
+      <!-- Success State - Use hasValue() and prevent overlap with loading/error states -->
+      <ng-container *ngIf="weatherData.hasValue() && !weatherData.isLoading() && !weatherData.error()">
+        <app-weather-card [weatherData]="weatherData.value()" [unit]="unit()"></app-weather-card>
+        <app-weather-details-card [weatherData]="weatherData.value()" [unit]="unit()"></app-weather-details-card>
       </ng-container>
 
     </ng-container>
