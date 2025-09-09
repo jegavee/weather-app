@@ -4,12 +4,12 @@ export const routes: Routes = [
     {
         path: '',
         redirectTo: '/home',
-        pathMatch: 'full'
+        // pathMatch: 'full'
     },
-    {
-        path: 'home',
-        loadComponent: () => import('./pages/home/home').then(c => c.Home)
-    },
+    // {
+    //     path: 'home',
+    //     loadComponent: () => import('./pages/home/home').then(c => c.Home)
+    // },
     {
         path: '**',
         redirectTo: '',
