@@ -1,16 +1,16 @@
-<div class="home-container">
-  <div class="search-container">
+<div class="font-sans w-full h-dvh flex flex-col items-center justify-between box-border p-4 m-0 flex-1 md:w-sm">
+  <div class="w-full mb-4 items-center flex-shrink-0 z-10 p-0 m-0">
     <app-weather-search (searchCity)="onSearch($event)"></app-weather-search>
   </div>
 
-  <div class="card-container">
+  <div class="flex flex-col gap-2 flex-1 items-center m-0 p-0 md:w-sm">
 
     <!-- Idle / Default State -->
     <ng-container *ngIf="!city()">
-      <div class="weather-placeholder weather-card">
+      <div class="flex justify-center text-white text-xl mt-8 min-h-[195px] w-screen -mx-4 px-4 text-center items-center">
         <p>Search for a city to see weather data</p>
       </div>
-      <div class="weather-details-placeholder weather-card">
+      <div class="flex justify-center items-center bg-white text-black text-base mt-8 rounded-3xl flex-1 w-full text-center items-center">
         <p>Weather details will appear here</p>
       </div>
     </ng-container>
@@ -20,23 +20,23 @@
 
       <!-- Loading State -->
       <ng-container *ngIf="weatherData.isLoading()">
-        <div class="loading-container weather-card">
-          <div class="loading-spinner"></div>
+        <div class="flex flex-col items-center justify-center gap-4 p-8 text-center min-h-[150px] bg-white rounded-3xl text-center items-center">
+          <div class="w-10 h-10 border-4 border-gray-200 border-t-blue-500 rounded-full animate-spin"></div>
           <p>Loading weather data...</p>
         </div>
-        <div class="loading-container weather-card">
-          <div class="loading-spinner"></div>
+        <div class="flex flex-col items-center justify-center gap-4 p-8 text-center min-h-[150px] bg-white rounded-3xl text-center items-center">
+          <div class="w-10 h-10 border-4 border-gray-200 border-t-blue-500 rounded-full animate-spin"></div>
           <p>Loading weather details...</p>
         </div>
       </ng-container>
 
       <!-- Error State - Show actual error message and prevent overlap with other states -->
       <ng-container *ngIf="weatherData.error() && !weatherData.isLoading()">
-        <div class="error-container weather-card">
-          <p class="error-icon">⚠️</p>
-          <p class="error-message">{{ weatherData.error()?.message || 'Failed to fetch weather data' }}</p>
+        <div class="flex flex-col items-center justify-center mt-8 min-h-[200px] w-screen -mx-4 px-4 text-center items-center">
+          <p class="text-5xl m-0">⚠️</p>
+          <p class="text-white text-xl m-0">{{ weatherData.error()?.message || 'Failed to fetch weather data' }}</p>
         </div>
-        <div class="error-placeholder weather-card">
+        <div class="flex justify-center items-center bg-white text-black text-base mt-8 rounded-3xl flex-1 w-full text-center items-center">
           <p>Weather details unavailable</p>
         </div>
       </ng-container>

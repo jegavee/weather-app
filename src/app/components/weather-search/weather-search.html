@@ -1,7 +1,8 @@
-<div class="search-container">
-  <div class="input-wrapper">
+<div class="flex flex-row justify-between p-0 w-full relative">
+  <div class="relative w-4/5">
     <!-- Search Input -->
     <input 
+      class="w-full px-4 py-3 text-base border border-gray-300 rounded-full outline-none transition-colors duration-200 box-border bg-white"
       #searchInput
       [ngModel]="city()" 
       (ngModelChange)="city.set($event)"
@@ -12,12 +13,12 @@
     />
 
     <!-- Recent Searches Dropdown -->
-    <div *ngIf="showRecentSearches()" class="recent-searches-dropdown">
-      <div class="dropdown-header">
+    <div *ngIf="showRecentSearches()" class="absolute top-full left-0 right-0 bg-white border border-gray-300 rounded-lg shadow-md z-[1000] max-h-[200px] overflow-y-auto mt-1">
+      <div class="flex justify-between items-center px-3 py-2 bg-gray-100 border-b border-gray-200 text-sm font-semibold text-gray-600">
         <span>Recent Searches</span>
         <button 
           type="button" 
-          class="clear-btn" 
+          class="bg-transparent border-none text-blue-600 cursor-pointer text-sm px-1 py-0.5 rounded transition-colors duration-200 hover:bg-blue-50"
           (click)="clearRecentSearches()"
           *ngIf="recentSearches().length > 0"
         >
@@ -25,17 +26,17 @@
         </button>
       </div>
       
-      <div class="dropdown-content">
+      <div class="max-h-[150px] overflow-y-auto">
         <div 
           *ngFor="let recentCity of recentSearches()" 
-          class="recent-search-item"
+          class="flex items-center px-3 py-2.5 cursor-pointer transition-colors duration-200 text-gray-800 text-base hover:bg-blue-50 last:border-b-0"
           (click)="selectRecentSearch(recentCity)"
         >
-          <i class="search-icon">🕐</i>
+          <i class="mr-2 text-sm opacity-60">🕐</i>
           {{ recentCity }}
         </div>
         
-        <div *ngIf="recentSearches().length === 0" class="no-recent">
+        <div *ngIf="recentSearches().length === 0" class="p-3 text-center text-gray-500 text-sm italic">
           No recent searches
         </div>
       </div>
@@ -44,9 +45,10 @@
   
   <!-- Unit Selector -->
   <select 
+    class="ml-0 p-1 text-base border border-transparent bg-transparent text-white outline-none transition-colors duration-200"
     [ngModel]="unit()" 
     (ngModelChange)="unit.set($event); onUnitChange()">
-    <option value="metric">°C</option>
-    <option value="imperial">°F</option>
+    <option class="bg-white text-black" value="metric">°C</option>
+    <option class="bg-white text-black" value="imperial">°F</option>
   </select>
 </div>

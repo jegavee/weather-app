@@ -1,55 +1,55 @@
-<div class="weatherDetails-card" *ngIf="weatherData() as data">
-  <div class="detail-row">
-    <div class="detail-item">
-        <span class="label">Humidity:</span>
-        <span class="value">{{ data.main.humidity }}%</span>
+<div class="bg-white rounded-3xl flex flex-col w-full flex-1 px-4 md:w-sm" *ngIf="weatherData() as data">
+  <div class="grid grid-cols-2 gap-24 text-base border-b border-blue-500 p-4 w-full box-border">
+    <div class="flex flex-col gap-2 w-full">
+        <span class="text-gray-600 text-xs text-left">Humidity:</span>
+        <span class="font-bold text-xl text-right text-cyan-700">{{ data.main.humidity }}%</span>
     </div>
 
-    <div class="detail-item">
-        <span class="label">Wind:</span>
-        <span class="value">{{ data.wind.speed }} {{ unit() === "metric" ? 'mp/h' : 'km/h' }}</span>
-    </div>
-  </div>
-
-  <div class="detail-row">
-    <div class="detail-item">
-        <span class="label">Pressure:</span>
-        <span class="value">{{ data.main.pressure }} hPa</span>
-    </div>
-
-    <div class="detail-item">
-        <span class="label">Visibility:</span>
-        <span class="value">{{ data.visibility / 1000 }} km</span>
+    <div class="flex flex-col gap-2 w-full">
+        <span class="text-gray-600 text-xs text-left">Wind:</span>
+        <span class="font-bold text-xl text-right text-cyan-700">{{ data.wind.speed }} {{ unit() === "metric" ? 'mp/h' : 'km/h' }}</span>
     </div>
   </div>
 
-  <div class="detail-row">
-    <div class="detail-item">
-        <span class="label">Clouds:</span>
-        <span class="value">{{ data.clouds.all }}%</span>
+  <div class="grid grid-cols-2 gap-8 text-base border-b border-blue-500 p-4 w-full box-border">
+    <div class="flex flex-col gap-2 w-full">
+        <span class="text-gray-600 text-xs text-left">Pressure:</span>
+        <span class="font-bold text-xl text-right text-cyan-700">{{ data.main.pressure }} hPa</span>
     </div>
 
-    <div class="detail-item" *ngIf="data.rain">
-        <span class="label">Rain:</span>
-        <span class="value" *ngIf="data.rain['1h']">{{ data.rain['1h'] }} mm <br> (1 hr ago)</span>
+    <div class="flex flex-col gap-2 w-full">
+        <span class="text-gray-600 text-xs text-left">Visibility:</span>
+        <span class="font-bold text-xl text-right text-cyan-700">{{ data.visibility / 1000 }} km</span>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-2 gap-8 text-base border-b border-blue-500 p-4 w-full box-border">
+    <div class="flex flex-col gap-2 w-full">
+        <span class="text-gray-600 text-xs text-left">Clouds:</span>
+        <span class="font-bold text-xl text-right text-cyan-700">{{ data.clouds.all }}%</span>
+    </div>
+
+    <div class="flex flex-col gap-2 w-full" *ngIf="data.rain">
+        <span class="text-gray-600 text-xs text-left">Rain:</span>
+        <span class="font-bold text-xl text-right text-cyan-700" *ngIf="data.rain['1h']">{{ data.rain['1h'] }} mm <br> (1 hr ago)</span>
         </div>
-    <div class="detail-item" *ngIf="!data.rain">
-        <span class="label">Rain:</span>
-        <span class="value">No rain</span>
+    <div class="flex flex-col gap-2 w-full" *ngIf="!data.rain">
+        <span class="text-gray-600 text-xs text-left">Rain:</span>
+        <span class="font-bold text-xl text-right text-cyan-700">No rain</span>
     </div>
   </div>
 
-<div class="detail-row">
-  <div class="detail-item">
-    <span class="label">Sunrise:</span>
-    <span class="value" *ngIf="data.sys.sunrise != null && data.timezone != null; else dash">
+<div class="grid grid-cols-2 gap-8 text-base border-b border-blue-500 p-4 w-full box-border">
+  <div class="flex flex-col gap-2 w-full">
+    <span class="text-gray-600 text-xs text-left">Sunrise:</span>
+    <span class="font-bold text-xl text-right text-cyan-700" *ngIf="data.sys.sunrise != null && data.timezone != null; else dash">
       {{ ((data.sys.sunrise + data.timezone) * 1000) | date:'hh:mm a':'UTC' }}
     </span>
   </div>
 
-  <div class="detail-item">
-    <span class="label">Sunset:</span>
-    <span class="value" *ngIf="data.sys.sunset != null && data.timezone != null; else dash">
+  <div class="flex flex-col gap-2 w-full">
+    <span class="text-gray-600 text-xs text-left">Sunset:</span>
+    <span class="font-bold text-xl text-right text-cyan-700" *ngIf="data.sys.sunset != null && data.timezone != null; else dash">
       {{ ((data.sys.sunset + data.timezone) * 1000) | date:'hh:mm a':'UTC' }}
     </span>
   </div>
